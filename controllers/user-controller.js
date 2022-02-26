@@ -58,21 +58,29 @@ const userController = {
       .catch(err => res.json(err));
   },
 
-  //Delete user and users associated thoughts
+   //  delete User
   deleteUser({ params }, res) {
-    Thought.deleteMany({ userId: params.id })
-      .then(() => {
-        User.findOneAndDelete({ userId: params.id })
-          .then(dbUserData => {
-            if (!dbUserData) {
-              res.status(404).json({ message: 'No User found with this id!' });
-              return;
-            }
-            res.json(dbUserData);
-          });
-      })
+    User.findOneAndDelete({ _id: params.id })
+      .then(dbUserData => res.json(dbUserData))
       .catch(err => res.json(err));
   },
+
+  // //Delete user and users associated thoughts
+  // //This route does not work correctly. Deletes all thoughts when a user is deleted
+  // deleteUser({ params }, res) {
+  //   Thought.deleteMany({ userId: params.id })
+  //     .then(() => {
+  //       User.findOneAndDelete({ userId: params.id })
+  //         .then(dbUserData => {
+  //           if (!dbUserData) {
+  //             res.status(404).json({ message: 'No User found with this id!' });
+  //             return;
+  //           }
+  //           res.json(dbUserData);
+  //         });
+  //     })
+  //     .catch(err => res.json(err));
+  // },
 
   // /api/users/:userid/fiends/:friendId
   addFriend({ params }, res) {
